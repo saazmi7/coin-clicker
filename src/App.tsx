@@ -5,13 +5,12 @@ function App() {
   const [coins, setCoins] = useState(0);
 
   useEffect(() => {
-    // Load saved coins from localStorage
     const savedCoins = localStorage.getItem("coins");
     if (savedCoins) {
       setCoins(parseInt(savedCoins));
     }
 
-    sdk.actions.ready(); // Let Farcaster know app is ready
+    sdk.actions.ready();
   }, []);
 
   const handleClick = () => {
@@ -35,4 +34,3 @@ function App() {
 }
 
 export default App;
-
