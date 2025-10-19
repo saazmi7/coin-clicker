@@ -1,63 +1,38 @@
-import { sdk } from "@farcaster/frame-sdk";
-import { useEffect } from "react";
-import { useAccount, useConnect, useSignMessage } from "wagmi";
+import { useEffect, useState } from "react";
+import { sdk } from "@farcaster/miniapp-sdk";
 
 function App() {
+  const [coins, setCoins] = useState(0);
+
   useEffect(() => {
-    sdk.actions.ready();
+    // Load saved coins from localStorage
+    const savedCoins = localStorage.getItem("coins");
+    if (savedCoins) {
+      setCoins(parseInt(savedCoins));
+    }
+
+    sdk.actions.ready(); // Let Farcaster know app is ready
   }, []);
 
-  return (
-    <>
-      <div>Mini App + Vite + TS + React + Wagmi</div>
-      <ConnectMenu />
-    </>
-  );
-}
-
-function ConnectMenu() {
-  const { isConnected, address } = useAccount();
-  const { connect, connectors } = useConnect();
-
-  if (isConnected) {
-    return (
-      <>
-        <div>Connected account:</div>
-        <div>{address}</div>
-        <SignButton />
-      </>
-    );
-  }
+  const handleClick = () => {
+    const newCoins = coins + 1;
+    setCoins(newCoins);
+    localStorage.setItem("coins", newCoins.toString());
+  };
 
   return (
-    <button type="button" onClick={() => connect({ connector: connectors[0] })}>
-      Connect
-    </button>
-  );
-}
-
-function SignButton() {
-  const { signMessage, isPending, data, error } = useSignMessage();
-
-  return (
-    <>
-      <button type="button" onClick={() => signMessage({ message: "hello world" })} disabled={isPending}>
-        {isPending ? "Signing..." : "Sign message"}
+    <div className="min-h-screen flex flex-col items-center justify-center bg-yellow-100 p-6">
+      <h1 className="text-4xl font-bold text-yellow-800 mb-4">💰 Coin Clicker</h1>
+      <p className="text-lg mb-4">You have <strong>{coins}</strong> coins.</p>
+      <button
+        onClick={handleClick}
+        className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-full text-xl"
+      >
+        Click to Earn Coins!
       </button>
-      {data && (
-        <>
-          <div>Signature</div>
-          <div>{data}</div>
-        </>
-      )}
-      {error && (
-        <>
-          <div>Error</div>
-          <div>{error.message}</div>
-        </>
-      )}
-    </>
+    </div>
   );
 }
 
 export default App;
+
