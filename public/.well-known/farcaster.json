@@ -2,10 +2,6 @@
   "frame": {
     "name": "Coin Clicker",
     "version": "0.0.1",
-    "iconUrl": "https://coin-clicker.vercel.app/icon.png",
-    "homeUrl": "https://coin-clicker.vercel.app",
-    "splashImageUrl": "https://coin-clicker.vercel.app/splash.png",
-    "splashBackgroundColor": "#facc15"
+    "homeUrl": "https://coin-clicker.vercel.app"
   }
 }
-
