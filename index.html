@@ -1,12 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create Mini App</title>
+
+    <!-- Farcaster Mini App Meta -->
+    <meta property="fc:frame" content='{
+      "version": "0.0.1",
+      "imageUrl": "https://coin-clicker.vercel.app/icon.png",
+      "button": {
+        "title": "Play Coin Clicker",
+        "action": {
+          "type": "launch_frame",
+          "name": "Coin Clicker",
+          "url": "https://coin-clicker.vercel.app",
+          "splashImageUrl": "https://coin-clicker.vercel.app/splash.png",
+          "splashBackgroundColor": "#facc15"
+        }
+      }
+    }' />
+
+    <title>Coin Clicker</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+
