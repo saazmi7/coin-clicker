@@ -10,6 +10,7 @@ function App() {
       setCoins(parseInt(savedCoins));
     }
 
+    // ✅ This line is important
     sdk.actions.ready();
   }, []);
 
