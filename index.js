@@ -10,9 +10,9 @@ const supabase = createClient(
 
 app.use(express.json());
 
-// 🎯 Frame route: shows user's score
-app.post('/frame', async (req, res) => {
-  const fid = req.body?.untrustedData?.fid;
+// ✅ Frame route — shows score and button
+app.all('/frame', async (req, res) => {
+  const fid = req.body?.untrustedData?.fid || 0;
 
   const { data } = await supabase
     .from('scores')
@@ -34,9 +34,9 @@ app.post('/frame', async (req, res) => {
   });
 });
 
-// 💰 Click route: add 1 coin
-app.post('/click', async (req, res) => {
-  const fid = req.body?.untrustedData?.fid;
+// ✅ Click route — adds +1 and shows new score
+app.all('/click', async (req, res) => {
+  const fid = req.body?.untrustedData?.fid || 0;
 
   const { data } = await supabase
     .from('scores')
