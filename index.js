@@ -1,17 +1,18 @@
-// index.js (or server.js)
 const express = require('express');
 const { createClient } = require('@supabase/supabase-js');
 const app = express();
 
+// ✅ Supabase credentials
 const supabase = createClient(
   'https://bnvawkfainypdqcpmnlq.supabase.co',
-  'eyJhbGciOiJIUzI1NiIs...'
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJudmF3a2ZhaW55cGRxY3BtbmxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3NzY4NjQsImV4cCI6MjA3NjM1Mjg2NH0.r76MRH9JZ2Xsp0Fvxh19P2cZPE1NOYPXQjDp0L52uAI'
 );
 
 app.use(express.json());
 
+// 🎯 Frame route: shows user's score
 app.post('/frame', async (req, res) => {
-  const fid = req.body.untrustedData.fid;
+  const fid = req.body?.untrustedData?.fid;
 
   const { data } = await supabase
     .from('scores')
@@ -19,22 +20,23 @@ app.post('/frame', async (req, res) => {
     .eq('fid', fid)
     .single();
 
-  const points = data ? data.points : 0;
+  const score = data ? data.points : 0;
 
   res.json({
     frames: [
       {
         type: 'button',
         label: '💰 Click to Earn',
-        action: '/click',
+        action: '/click'
       }
     ],
-    title: `You have ${points} coins!`,
+    title: `You have ${score} coins!`
   });
 });
 
+// 💰 Click route: add 1 coin
 app.post('/click', async (req, res) => {
-  const fid = req.body.untrustedData.fid;
+  const fid = req.body?.untrustedData?.fid;
 
   const { data } = await supabase
     .from('scores')
@@ -43,22 +45,23 @@ app.post('/click', async (req, res) => {
     .single();
 
   const current = data?.points || 0;
-  const newPoints = current + 1;
+  const newScore = current + 1;
 
   await supabase
     .from('scores')
-    .upsert({ fid, points: newPoints });
+    .upsert({ fid, points: newScore });
 
   res.json({
     frames: [
       {
         type: 'button',
         label: '💰 Click Again',
-        action: '/click',
+        action: '/click'
       }
     ],
-    title: `🪙 You now have ${newPoints} coins!`,
+    title: `🪙 You now have ${newScore} coins!`
   });
 });
 
-app.listen(3000, () => console.log('Server is running on port 3000'));
+// ✅ Start server
+app.listen(3000, () => console.log('✅ Server running on port 3000'));
